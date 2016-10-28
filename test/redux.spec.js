@@ -6,9 +6,14 @@ import { default as Reduxo, __RewireAPI__ as ReduxoModuleRewireAPI } from '../ap
 
 describe('module default export test', function() {
 
-    it('should be a function', () => {
-        expect( typeof Reduxo ).to.equal('function');
+    it('should be an object', () => {
+        expect( typeof Reduxo ).to.equal('object');
     });
+
+    it( 'should have createStore method', () => {
+        expect( Reduxo.createStore ).to.be.ok;
+        assert.isFunction( Reduxo.createStore );
+    })
 });
 
 // to test

@@ -1,3 +1,5 @@
-const Reduxo = () => {};
+class Reduxo {
+    createStore() {};
+};
 
-export default Reduxo;
+export default new Reduxo();
