@@ -1,5 +1,3 @@
-const fart = () => 'fart';
-
-const Reduxo = () => fart();
+const Reduxo = () => {};
 
 export default Reduxo;
