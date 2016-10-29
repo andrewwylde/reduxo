@@ -1,48 +1,40 @@
 import { assert, expect } from 'chai';
 
-import { default as ReduxoModule } from '../app/reduxo';
-import { default as Reduxo, __RewireAPI__ as ReduxoModuleRewireAPI } from '../app/reduxo';
+import { default as createStore } from '../app/reduxo';
+import { default as createStoreModule, __RewireAPI__ as createStoreRewireAPI } from '../app/reduxo';
 
-describe('Reduxo class', () => {
+describe( '#createStore', () => {
 
-    it('should be an object', () => {
-        expect( typeof ReduxoModule ).to.equal('object');
-    })
+  it( 'should be a function', () => {
+    expect( createStore ).to.be.a('function');
+  });
 
-    it( 'should have createStore method', () => {
-        expect( ReduxoModule ).to.have.property('createStore');
+  it( 'should throw if reducers is not a function', () => {
+    expect( createStore.bind( null, {}, {} ) ).to.throw( TypeError );
+    expect( createStore.bind( null, () => {}, {} ) ).to.not.throw();
+  });
+
+  it( 'should throw if initial state not an object', () => {
+    expect( createStore.bind( null, () => {} , () => {} ) ).to.throw(TypeError);
+    expect( createStore.bind( null, () => {} , {} ) ).to.not.throw();
+  });
+
+  it( 'should return an object', () => {
+    const func = () => {};
+    const obj = {};
+    const store = createStore( func, obj );
+    expect( store ).to.be.an('object');
+  });
+
+  describe( 'store', () => {
+    const func = () => {};
+    const obj = {};
+    const store = createStore( func, obj );
+    it( 'shold have #subscribe and #dispatch', () => {
+      expect( store ).to.have.property( 'subscribe' );
+      expect( store ).to.have.property( 'subscribe' );
     });
-
-    describe( '#createStore', () => {
-      it( 'should be a function', () => {
-        expect( ReduxoModule.createStore ).to.be.a('function');
-      });
-
-      it( 'should throw if reducers is not a function', () => {
-        const func = () => {};
-        expect( ReduxoModule.createStore.bind( null, {} ) ).to.throw( TypeError );
-        expect( ReduxoModule.createStore.bind( null, func ) ).to.not.throw();
-      });
-
-      it( 'should throw if initial state not an object', () => {
-        const func = () => {};
-        expect( ReduxoModule.createStore.bind( null, func, func ) ).to.throw(TypeError);
-        expect( ReduxoModule.createStore.bind( null, func, {} ) ).to.not.throw();
-      });
-
-      it( 'should return an object', () => {
-        const func = () => {};
-        const obj = {};
-        const store = ReduxoModule.createStore( func, obj );
-        expect( store ).to.be.an('object')
-      });
-
-      describe( 'store', () => {
-        it( 'description', () => {
-
-        });
-      });
-    });
+  });
 });
 
 // to test
