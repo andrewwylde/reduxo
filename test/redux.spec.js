@@ -1,7 +1,7 @@
 import { assert, expect } from 'chai';
 
-import { default as createStore } from '../app/reduxo';
-import { default as createStoreModule, __RewireAPI__ as createStoreRewireAPI } from '../app/reduxo';
+import { default as createStore } from '../reduxo';
+import { default as createStoreModule, __RewireAPI__ as createStoreRewireAPI } from '../reduxo';
 
 describe( '#createStore', () => {
   // consts
