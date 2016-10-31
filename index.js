@@ -1,3 +1,3 @@
 import reduxo from './reduxo';
 
-export default new reduxo();
+export default reduxo;
