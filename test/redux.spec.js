@@ -35,6 +35,38 @@ describe( '#createStore', () => {
       expect( store ).to.have.property( 'getState' );
     });
 
+
+    it( 'should modify state with reducer', () => {
+      const initialState = {
+        foo: 'bar'
+      };
+      const action = {
+        type: 'change',
+        body: {
+          foo: 'baz'
+        }
+      };
+      function reducto( prevState, action ) {
+        if ( action.type === 'change' ) {
+          return Object.assign(
+            {},
+            prevState,
+            action.body
+          )
+        }
+        return prevState;
+      }
+      const store = createStore( reducto, initialState );
+      const oldState = store.getState();
+      expect( oldState.foo ).to.equal('bar');
+
+      store.dispatch( action );
+      const newState = store.getState();
+
+      expect( newState.foo ).to.equal('baz');
+
+    });
+
     describe( '#subscribe', () => {
       it( 'should be a function', () => {
         const store = createStore( noop, noobj );

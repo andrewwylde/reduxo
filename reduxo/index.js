@@ -14,7 +14,8 @@ function createStore( reducer, state = {} ) {
     if ( typeof action !== 'object' ) {
       throw new TypeError('action must be an object');
     }
-    reducer( state, action );
+
+    state = reducer( state, action );
 
     listeners.forEach( listener => {
       listener();
