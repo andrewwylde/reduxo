@@ -10,20 +10,36 @@ function createStore( reducer, state = {} ) {
 
 
   const listeners = new Set();
+//
+  // function executeListener ( listener ){
+    // listener();
+  // }
 
   function dispatch( action ){
+    if ( typeof action !== 'object' ) {
+      throw new TypeError('action must be an object');
+    }
+    reducer( state, action );
 
+    listeners.forEach( listener => {
+      listener();
+    } );
   }
 
   function subscribe( listener ) {
+    if ( typeof listener !== 'function' ) {
+      throw new TypeError('listener must be a function');
+    }
 
     listeners.add( listener );
 
-    const unsubscribe = () => {
-      listeners.remove( listener );
-    };
-
-    return unsubscribe;
+    return () => {};
+    //
+    // const unsubscribe = () => {
+    //   listeners.remove( listener );
+    // };
+    //
+    // return unsubscribe;
   }
 
   function getState(){
@@ -36,7 +52,6 @@ function createStore( reducer, state = {} ) {
 
 
 // const store = createStore( reducers, initialState );
-// console.log('fuck');
 // const unsub = store.subscribe( () => console.log( store.getState() ) );
 // store.dispatch({ type: 'greeting' });
 // store.dispatch({ type: 'add-device', device: { name: 'FriendPodTouch', manufacturer: 'Apple', mac: 'ayyy' } });
