@@ -8,12 +8,7 @@ function createStore( reducer, state = {} ) {
     throw new TypeError('state must be an object');
   }
 
-
   const listeners = new Set();
-//
-  // function executeListener ( listener ){
-    // listener();
-  // }
 
   function dispatch( action ){
     if ( typeof action !== 'object' ) {
@@ -33,13 +28,9 @@ function createStore( reducer, state = {} ) {
 
     listeners.add( listener );
 
-    return () => {};
-    //
-    // const unsubscribe = () => {
-    //   listeners.remove( listener );
-    // };
-    //
-    // return unsubscribe;
+    return function unsubscribe() {
+      listeners.delete( listener );
+    };
   }
 
   function getState(){
@@ -48,13 +39,5 @@ function createStore( reducer, state = {} ) {
 
   return { dispatch, subscribe, getState };
 }
-
-
-
-// const store = createStore( reducers, initialState );
-// const unsub = store.subscribe( () => console.log( store.getState() ) );
-// store.dispatch({ type: 'greeting' });
-// store.dispatch({ type: 'add-device', device: { name: 'FriendPodTouch', manufacturer: 'Apple', mac: 'ayyy' } });
-//
 
 export default createStore;

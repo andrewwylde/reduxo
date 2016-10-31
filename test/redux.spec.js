@@ -54,6 +54,19 @@ describe( '#createStore', () => {
         expect( unsubscribe ).to.be.a('function');
       });
 
+      it( 'should not call function after unsubscribe', () => {
+        const store = createStore( noop, noobj );
+        let called = false;
+        const listener = () => {
+          called = true;
+        }
+        let unsub = store.subscribe( listener );
+        unsub();
+        store.dispatch({});
+        expect( called ).to.be.false;
+
+      });
+
     });
 
     describe( '#dispatch', () => {
@@ -94,6 +107,23 @@ describe( '#createStore', () => {
         expect( called ).to.be.true;
       });
 
+      it( 'should call all subscribed functions when subscribed', () => {
+        const store = createStore( noop, noobj );
+        let calledOne = false;
+        let calledTwo = false;
+        const listenerOne = () => {
+          calledOne = true;
+        }
+        const listenerTwo = () => {
+          calledTwo = true;
+        }
+        store.subscribe( listenerOne );
+        store.subscribe( listenerTwo );
+        store.dispatch({});
+        expect( calledOne ).to.be.true;
+        expect( calledTwo ).to.be.true;
+      });
+
     });
 
     describe( '#getState', () => {
@@ -119,11 +149,3 @@ describe( '#createStore', () => {
     });
   });
 });
-
-// to test
-
-// const store = createStore( reducers, initialState );
-
-// const unsub = store.subscribe( () => console.log( store.getState() ) );
-// store.dispatch({ type: 'greeting' });
-// store.dispatch({ type: 'add-device', device: { name: 'FriendPodTouch', manufacturer: 'Apple', mac: 'ayyy' } });
